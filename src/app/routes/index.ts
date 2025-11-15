@@ -8,6 +8,6 @@ router.get('/', (req, res) => {
   return res.send("Hello, World!")
 })
 
-router.post('/cidades', CidadesControler.create)
+router.post('/cidades', CidadesControler.createValidation, CidadesControler.create)
 
 export { router }

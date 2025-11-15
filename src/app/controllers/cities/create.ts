@@ -1,28 +1,23 @@
 import { Request, Response } from 'express'
-import { StatusCodes } from 'http-status-codes'
 import * as yup from 'yup'
+import { validation } from '../../shared/middleware'
 
-interface CitiesD {
-  name: string,
+export interface CitiesD {
+  name: string
 }
 
-const bodyValidation: yup.Schema<CitiesD> = yup.object().shape({
-  name: yup.string().required().min(3),
+export interface FilterD {
+  filter?: string,
+}
+
+export const createValidation = validation({
+  body: yup.object().shape({name: yup.string().required().min(3)}),
+  query: yup.object().shape({filter: yup.string().min(3)})
 })
 
+
+
 export const create = async (req: Request<{}, {}, CitiesD>, res: Response) => {
-  let validateData: CitiesD
-  try {
-    validateData = await bodyValidation.validate(req.body)
-  } catch (error) {
-    const yupError = error as yup.ValidationError
-
-    return res.json({
-      errors: {
-        default: yupError.message
-      }
-    })
-  }
-
+ 
   return res.send("Created!")
 }
